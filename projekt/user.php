@@ -25,7 +25,6 @@ class User{
         $this->FK_idNaslov = $FK_idNaslov;
         $this->FK_idSpol = $FK_idSpol;
         $this->FK_idSlika = $FK_idSlika;
-
     }
 
     //statična funkcija, ki jo lahko kličemo brez primerka razreda

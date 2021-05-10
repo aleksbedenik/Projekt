@@ -40,7 +40,6 @@ class Aktivnost{
         }
         $podatki=array();
 
-
         while($podatek = $result->fetch_object()){
             array_push($podatki, $podatek);
         }
