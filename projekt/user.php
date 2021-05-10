@@ -26,7 +26,6 @@ class User{
         $this->FK_idSpol = $FK_idSpol;
         $this->FK_idSlika = $FK_idSlika;
     }
-
     //statična funkcija, ki jo lahko kličemo brez primerka razreda
     public static function vrniVse($db) {
         $qs="SELECT ime, priimek, email, telefon, teza, visina, spol, ulica, hisna_st, ime_poste, stevilka_poste FROM user JOIN spol ON (user.FK_idSpol = spol.idSpol) JOIN naslov ON (user.FK_idNaslov = naslov.idNaslov) JOIN posta ON (naslov.FK_idPosta = posta.idPosta);";

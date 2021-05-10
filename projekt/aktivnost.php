@@ -46,6 +46,7 @@ class Aktivnost{
         return $podatki;
     }
 
+
     public function dodaj($db){
         $datum=$this->datum;
         $ocena_aktivnosti=$this->ocena_aktivnosti;
