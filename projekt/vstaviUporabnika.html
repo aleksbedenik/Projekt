@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vstavi Uporabnika</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<nav>
+    <a href="index.html">Index</a> |
+    <a href="izpisUporabnikov.html">Izpis Uporabnikov</a> |
+    <a href="vstaviUporabnika.html">Vstavi Uporabnika</a> |
+    <a href="izpisAktivnosti.html">Izpis Aktivnosti</a> |
+    <a href="vstaviAktivnost.html">Vstavi Aktivnost</a>
+</nav>
+
+<table>
+    <tr><td>Ime:</td><td><input type="text" id="ime"></td></tr>
+    <tr><td>Priimek:</td><td><input type="text" id="priimek"></td></tr>
+    <tr><td>E-mail:</td><td><input type="text" id="email"></td></tr>
+    <tr><td>Telefon:</td><td><input type="number" id="telefon"></td></tr>
+    <tr><td>Teža:</td><td><input type="number" id="teza"></td></tr>
+    <tr><td>Višina:</td><td><input type="number" id="visina"></td></tr>
+    <tr><td>FK_idNaslov:</td><td><input type="number" id="FK_idNaslov"></td></tr>
+    <tr><td>FK_idSpol:</td><td><input type="number" id="FK_idSpol"></td></tr>
+
+</table>
+
+<button onclick="dodaj();">Vstavi</button>
+
+<script>
+    function dodaj(){
+        podatek={ime:$("#ime").val(), priimek:$("#priimek").val(), email:$("#email").val(), telefon:$("#telefon").val(), teza:$("#teza").val(), visina:$("#visina").val(), FK_idNaslov:$("#FK_idNaslov").val(), FK_idSpol:$("#FK_idSpol").val()}
+        $.post("api.php/baza/user",podatek,function(data){
+
+            $(location).attr('href', 'izpisUporabnikov.html')
+        });
+    }
+</script>
+</body>
+</html>

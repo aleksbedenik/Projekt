@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<table id="odg">
+
+</table>
+
+name: <input type="text" id="name"> <br>
+
+<button onclick="izpisiVse();">Izpis Vseh</button>
+<button onclick="dodaj();">Dodaj</button>
+
+<script>
+
+    function izpisiVse(){
+
+        $.get("api.php/baza",function(data){
+            console.log(data);
+
+            var $podatki = "<tr><th>ID</th><th>name</th></tr>";
+
+            $.each(data, function(key,value) {
+                $podatki += "<tr><td>" + value.id + "</td><td>" + value.name + "</td></tr>";
+            });
+
+            $("#odg").html($podatki);
+
+        });
+
+    }
+
+    function dodaj(){
+        podatek={name:$("#name").val()}
+        $.post("api.php/baza",podatek,function(data){
+            $("#name").val("");
+            //$("#cors").append(JSON.stringify(data));
+        });
+    }
+</script>
+</body>
+</html>

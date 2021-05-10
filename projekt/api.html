@@ -1,0 +1,82 @@
+﻿<html>
+<head>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<body>
+<div id="odg"></div>
+<div style="border:1px solid red;" id="cors"></div>
+<div style="border:1px solid blue;" id="jsonp"></div>
+<button onclick="corsError();">CORSError</button>
+<button onclick="proxy();">Proxy</button>
+<button onclick="cors();">CORS</button>
+<button onclick="jsonp();">JSONP</button>
+<br>
+<!-- uporabniški vmensik za dodajanje in urejanje oglasa -->
+ID: <input type="text" id="id"> Naslov: <input type="text" id="naslov"> Vsebina : <input type="text" id="vsebina"><br>
+<br>
+<button onclick="dodaj();">Dodaj</button>
+<button onclick="posodobi();">Posodobi</button>
+<script>
+
+//zahteva na tujo domeno, kjer ni ustreznega headerja (napka v konzoli ob klicu takšne funkcije)
+function corsError(){
+
+$.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=46.5475311,15.6357408&radius=500&type=restaurant&keyword=fast&key=AIzaSyCVEC1ERr1a9XG8Etp3e26EHuYc3ZxfFOc",function(data){
+	console.log(data);
+$("#odg").append(data);
+});
+
+}
+
+//php proxy, ki naredi zahtevo na Google places in vrne vsebino zahteve. Klic je potem lahko izveden v lokalno domeno
+function proxy(){
+
+$.get("api2.php/proxy",function(data){
+	console.log(data);
+$("#odg").append(data);
+});
+
+}
+
+//običajen ajax v domačo domeno
+function cors(){
+oglas={naslov:"Nov oglas",vsebina:"Nova vsebina"}
+//pri zahtevi se vidi, da strežnik pošlje header Access-Control-Allow-Origin:* 
+$.post("api2.php/oglas",oglas,function(data){
+$("#cors").append(JSON.stringify(data));
+});
+}
+
+//callback za JSONP
+function izpisi(podatki){
+$("#jsonp").append(JSON.stringify(podatki));
+}
+
+//Dodajanje script taga z get zahtevo na JSONP metodo
+function jsonp(){
+var s = document.createElement("script");
+s.src = "api2.php/oglas/JSONP/izpisi";
+document.body.appendChild(s);
+}
+
+
+//običajen ajax za dodajanje oglasa
+function dodaj(){
+oglas={naslov:$("#naslov").val(),vsebina:$("#vsebina").val()}
+$.post("api2.php/oglas",oglas,function(data){
+$("#cors").append(JSON.stringify(data));
+});
+}
+
+//običajen ajax za posodabljanje oglasa
+function posodobi(){
+oglas={naslov:$("#naslov").val(),vsebina:$("#vsebina").val()}
+$.ajax({method:"put", url:"api2.php/oglas/"+$("#id").val(),data:JSON.stringify(oglas),success:function(data){
+$("#cors").append(JSON.stringify(data));
+}});
+}
+
+
+</script>
+</body>
+</html>
