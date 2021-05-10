@@ -5,6 +5,7 @@ include "aktivnost.php";
 $method = $_SERVER['REQUEST_METHOD'];
 
 
+
 //povezava na bazo
 $db=mysqli_connect("localhost","root","","projekt");
 $db->set_charset("UTF8");
