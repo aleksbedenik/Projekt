@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Projekt Ptuj</string>
-    <string name="main_activity_login_text">Prijavi se v Račun</string>
+    <string name="main_activity_login_text"><b>Prijavi se v Račun</b></string>
     <string name="main_activity_login_button">Prijavi se</string>
+    <string name="main_activity_register_account_text"><u>Registriraj se</u></string>
+
+    <string name="register_activity_register_button">Registriraj se</string>
+    <string name="register_activity_register_text"><b>Ustvari nov račun</b></string>
+    <string name="register_activity_login_text"><u>Že imaš račun?</u></string>
 
 </resources>
