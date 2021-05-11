@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mainActivity_layout_button_MarginLeft">15%</dimen>
+    <dimen name="mainActivity_layout_button_MarginRight">15%</dimen>
+    <dimen name="mainActivity_layout_editText_MarginRight">15%</dimen>
+    <dimen name="mainActivity_layout_editText_MarginLeft">15%</dimen>
+
+    <dimen name="mainActivity_layout_textView_MarginTop">10%</dimen>
+    <dimen name="mainActivity_layout_textView_MarginRight">15%</dimen>
+    <dimen name="mainActivity_layout_textView_MarginLeft">15%</dimen>
+
+
+
+
+</resources>
