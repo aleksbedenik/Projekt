@@ -67,7 +67,6 @@ public class RegisterAccount extends AppCompatActivity {
                 }else{
                     if(TextUtils.isEmpty(password.getText().toString())){
                         password.setText("Geslo");
-                        Log.i("Main","Dela");
                     }
                     onPassword.setText("");
                 }
@@ -78,11 +77,10 @@ public class RegisterAccount extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
                     repeatPassword.setText("");
-                    onRepeatPassword.setText("Geslo");
+                    onRepeatPassword.setText("Ponovi geslo");
                 }else{
                     if(TextUtils.isEmpty(repeatPassword.getText().toString())){
-                        repeatPassword.setText("Geslo");
-                        Log.i("Main","Dela");
+                        repeatPassword.setText("Ponovi geslo");
                     }
                     onRepeatPassword.setText("");
                 }

@@ -77,4 +77,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void buttonTest(View view) {
+        Intent i = new Intent(getBaseContext(), MainDashboard.class);
+        startActivity(i);
+    }
 }
