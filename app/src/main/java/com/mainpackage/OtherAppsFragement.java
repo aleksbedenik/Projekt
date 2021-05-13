@@ -16,4 +16,5 @@ public class OtherAppsFragement extends Fragment {
         return inflater.inflate(R.layout.fragement_other_apps, container, false);
 
     }
+
 }
