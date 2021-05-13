@@ -1,15 +1,23 @@
 package com.mainpackage;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     EditText username,password;
@@ -75,10 +83,49 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+/*
+    private void checkForPermission(){
+        if(ContextCompat.checkSelfPermission(MainDashboard.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            requestStoragePermission();
+        }else{
+            Toast.makeText(MainDashboard.this, "Permission allowed :)", Toast.LENGTH_LONG).show();
+        }
+    }
+    private void requestStoragePermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)){
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission needed")
+                    .setMessage("This permission is needed to access your samsung health data")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainDashboard.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
 
-
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        }else{
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+        if(requestCode == STORAGE_PERMISSION_CODE) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }*/
     public void buttonTest(View view) {
-        Intent i = new Intent(getBaseContext(), MainDashboard.class);
-        startActivity(i);
+       Intent i = new Intent(getBaseContext(), BottomNavigationActivity.class);
+       startActivity(i);
     }
 }
