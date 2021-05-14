@@ -19,10 +19,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity {
     EditText username,password;
     TextView onUsername, onPassword;
     TextView textForgotPassword,textRegisterAccount;
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +54,15 @@ public class MainActivity extends AppCompatActivity {
         setNavigationBar();
         // checks for focus on EditText's
         editTextListeners();
+        String buildJson = "[{'username':'username',"
+                + "'password':'password'}]";
+
+
+
 
     }
+
+   
     public void setNavigationBar(){
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
