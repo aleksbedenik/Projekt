@@ -22,15 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/mainActivity_layout_textView_MarginLeft"
-        android:layout_marginTop="36dp"
         android:layout_marginRight="@dimen/mainActivity_layout_textView_MarginRight"
         android:text="@string/register_activity_login_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainActivity_login_button"
-        app:layout_constraintVertical_bias="0.006" />
+        app:layout_constraintTop_toBottomOf="@+id/RegisterAccount_registerFail_text"
+        app:layout_constraintVertical_bias="0.069" />
 
     <TextView
         android:id="@+id/registerActivity_login_onEditTextPassw"
@@ -67,6 +66,7 @@
 
         style="@style/AppTheme.Button"
         android:layout_marginTop="24dp"
+        android:onClick="registerActivity_register_button"
         android:text="@string/register_activity_register_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -102,8 +102,19 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Ponovi geslo"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registerActivity_onRepeatPassword_text" />
+
+    <TextView
+        android:id="@+id/RegisterAccount_registerFail_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainActivity_login_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

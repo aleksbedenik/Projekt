@@ -10,8 +10,10 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -19,8 +21,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -33,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     EditText username,password;
     TextView onUsername, onPassword;
     TextView textForgotPassword,textRegisterAccount;
+    SharedPreferences sp;
+
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @Override
@@ -54,15 +67,23 @@ public class MainActivity extends AppCompatActivity {
         setNavigationBar();
         // checks for focus on EditText's
         editTextListeners();
-        String buildJson = "[{'username':'username',"
-                + "'password':'password'}]";
+        //pogledam ce je v shared pref ze user id
+        checkSharedPrefs();
 
 
 
 
     }
 
-   
+   void checkSharedPrefs(){
+       sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+       if(sp.contains("USER ID")){
+            Intent i = new Intent(getBaseContext(), BottomNavigationActivity.class);
+            finish();
+            startActivity(i);
+        }
+   }
     public void setNavigationBar(){
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
@@ -99,6 +120,70 @@ public class MainActivity extends AppCompatActivity {
                     }
                     onPassword.setText("");
                 }
+            }
+        });
+    }
+    public void postRequestLoginUser(String username, String password){
+        AsyncHttpClient client = new AsyncHttpClient();
+        JSONObject jsonParams = new JSONObject();
+        try {
+            jsonParams.put("username", username);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            jsonParams.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(jsonParams.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        client.post(MainActivity.this, "https://projektptuj.ddns.net/api.php/baza/user/android/prijava", entity, "application/json", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(MainActivity.this, responseString, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                Log.i("MainActivity", responseString);
+
+                try {
+                    JSONObject json = new JSONObject(responseString);
+                    String failResponse = json.get("info").toString();
+                    Log.i("MainActivity", failResponse);
+                   // String successResponse = json.get("idUser").toString();
+                   // Log.i("MainActivity", successResponse);
+                    Toast.makeText(MainActivity.this, failResponse, Toast.LENGTH_LONG).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                JSONObject json = null;
+                try {
+                    sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = sp.edit();
+
+                    json = new JSONObject(responseString);
+                    String successResponse = json.get("idUser").toString();
+                    editor.putString("USER ID",successResponse.toString());
+                    editor.apply();
+
+                    Intent i = new Intent(getBaseContext(), BottomNavigationActivity.class);
+                    Toast.makeText(MainActivity.this, "Prijava uspešna", Toast.LENGTH_LONG).show();
+                    finish();
+                    startActivity(i);
+                    Log.i("MainActivity", successResponse);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
     }
@@ -146,5 +231,10 @@ public class MainActivity extends AppCompatActivity {
     public void buttonTest(View view) {
        Intent i = new Intent(getBaseContext(), BottomNavigationActivity.class);
        startActivity(i);
+    }
+
+    public void MainActivity_login_button(View view) {
+        postRequestLoginUser(username.getText().toString(),password.getText().toString());
+
     }
 }
