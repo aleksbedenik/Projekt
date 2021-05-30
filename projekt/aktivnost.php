@@ -28,9 +28,15 @@ class Aktivnost{
 
     }
 
-    //statična funkcija, ki jo lahko kličemo brez primerka razreda
-    public static function vrniVse($db) {
-        $qs="SELECT datum, ocena_aktivnosti, koraki, porabljene_kalorije, povp_srcni_utrip, povp_hitrost, razdalja, cas, ime FROM aktivnost JOIN user ON (user.idUser = aktivnost.FK_idUser);";
+
+    public static function vrniVseAktivnosti($db, $id) {
+
+        if(User::isAdmin($db, $id) == true){
+            $qs="SELECT datum, ocena_aktivnosti, koraki, porabljene_kalorije, povp_srcni_utrip, povp_hitrost, razdalja, cas, username, ime FROM aktivnost JOIN user ON (user.idUser = aktivnost.FK_idUser);";
+        }else $qs="SELECT datum, ocena_aktivnosti, koraki, porabljene_kalorije, povp_srcni_utrip, povp_hitrost, razdalja, cas, username, ime FROM aktivnost JOIN user ON (user.idUser = aktivnost.FK_idUser) WHERE FK_idUser='$id';";
+
+
+
         $result=mysqli_query($db,$qs);
 
         if(mysqli_error($db))
@@ -46,6 +52,25 @@ class Aktivnost{
         return $podatki;
     }
 
+    public static function vrniPovprecje($db, $id){
+        $qs="SELECT povp_koraki, povp_poraba_kalorij, povp_srcni_utrip, povp_hitrost, povp_razdalja, povp_cas FROM povprecje_aktivnosti WHERE FK_idUser='$id';";
+
+        $result=mysqli_query($db,$qs);
+        if(mysqli_error($db))
+        {
+            var_dump(mysqli_error($db));
+            exit();
+        }
+
+        $podatki=array();
+
+        while($podatek = $result->fetch_object()){
+            array_push($podatki, $podatek);
+        }
+        return $podatki;
+
+    }
+
 
 
     public function dodaj($db){
@@ -59,15 +84,18 @@ class Aktivnost{
         $cas=$this->cas;
         $FK_idUser=$this->FK_idUser;
 
+
+
         $qs="INSERT INTO aktivnost (datum, ocena_aktivnosti, koraki, porabljene_kalorije, povp_srcni_utrip, povp_hitrost, razdalja, cas, FK_idUser) VALUES('$datum', '$ocena_aktivnosti', '$koraki', '$porabljene_kalorije', '$povp_srcni_utrip', '$povp_hitrost', '$razdalja', '$cas', '$FK_idUser');";
         $result=mysqli_query($db,$qs);
 
         if(mysqli_error($db))
         {
             var_dump(mysqli_error($db));
-            exit();
+            return false;
         }
         $this->idAktivnost=mysqli_insert_id($db);
+        return true;
     }
 
 }

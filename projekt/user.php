@@ -12,6 +12,7 @@ class User{
     public $FK_idNaslov;
     public $FK_idSpol;
     public $FK_idSlika;
+    public $username;
 
     function __construct($ime, $priimek, $email, $telefon, $teza, $visina, $FK_idNaslov, $FK_idSpol, $FK_idSlika=NULL, $idUser=0)
     {
@@ -27,9 +28,34 @@ class User{
         $this->FK_idSlika = $FK_idSlika;
     }
 
-    //statična funkcija, ki jo lahko kličemo brez primerka razreda
-    public static function vrniVse($db) {
-        $qs="SELECT ime, priimek, email, telefon, teza, visina, spol, ulica, hisna_st, ime_poste, stevilka_poste FROM user JOIN spol ON (user.FK_idSpol = spol.idSpol) JOIN naslov ON (user.FK_idNaslov = naslov.idNaslov) JOIN posta ON (naslov.FK_idPosta = posta.idPosta);";
+    public static function validate_login($db, $username, $password){
+
+        if($username == null or $password == null) return -1;
+        $username = mysqli_real_escape_string($db, $username);
+        //$pass = sha1($password);
+        $query = "SELECT * FROM user WHERE username='$username' AND password='$password'";
+        $res = $db->query($query);
+        if($user_obj = $res->fetch_object()){
+            return $user_obj->idUser; //ob uspesni prijavi vrne id usera
+        }
+        return -1;
+    }
+
+    public static function isAdmin($db, $id){
+
+        $query = "SELECT * FROM user WHERE idUser='$id' AND admin=true;";
+        $res = $db->query($query);
+        if(mysqli_num_rows($res)==0)return false;
+        return true;
+
+    }
+
+
+    public static function izpisUporabnika($db, $id) {
+        if(User::isAdmin($db, $id) == true){
+            $qs="SELECT username, password, ime, priimek, email, telefon, teza, visina, spol, ulica, hisna_st, ime_poste, stevilka_poste FROM user JOIN spol ON (user.FK_idSpol = spol.idSpol) JOIN naslov ON (user.FK_idNaslov = naslov.idNaslov) JOIN posta ON (naslov.FK_idPosta = posta.idPosta);";
+        }else $qs="SELECT username, password, ime, priimek, email, telefon, teza, visina, spol, ulica, hisna_st, ime_poste, stevilka_poste FROM user JOIN spol ON (user.FK_idSpol = spol.idSpol) JOIN naslov ON (user.FK_idNaslov = naslov.idNaslov) JOIN posta ON (naslov.FK_idPosta = posta.idPosta) WHERE idUser = '$id';";
+
         $result=mysqli_query($db,$qs);
 
         if(mysqli_error($db))
@@ -71,6 +97,39 @@ class User{
         }
         $this->idUser=mysqli_insert_id($db);
     }
+
+    public static function username_exists($db, $username){
+
+        $qs = "SELECT * FROM user WHERE username='$username'";
+        $result=mysqli_query($db,$qs);
+
+        return mysqli_num_rows($result) > 0;
+    }
+
+    public static function register($db, $username, $password){
+        $username = mysqli_real_escape_string($db, $username);
+
+        if($username == "") return false;
+        if($password == "") return false;
+        //$pass = sha1($password);
+        if(User::username_exists($db, $username)){
+            return false;
+        }
+
+
+        $qs="INSERT INTO user (username, password) VALUES('$username', '$password');";
+        $result=mysqli_query($db,$qs);
+
+        if(mysqli_error($db))
+        {
+            var_dump(mysqli_error($db));
+            return false;
+        }
+
+        return true;
+    }
+
+
 
 }
 
