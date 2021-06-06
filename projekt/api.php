@@ -8,7 +8,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 
 //povezava na bazo
-$db=mysqli_connect("localhost","admin","aleksintim","projekt");
+$db=mysqli_connect("localhost","root","","projekt");
 $db->set_charset("UTF8");
 
 
@@ -154,7 +154,7 @@ if(isset($request[0])&&($request[0]=='baza')){
                 if(isset($request[2]) && $request[2]=='android'){ //vstavi aktivnost android
                     $input = json_decode(file_get_contents('php://input'), true);
                     if(isset($input)){
-                        $podatek=new Aktivnost($input["datum"], $input["ocena_aktivnosti"], $input["koraki"], $input["porabljene_kalorije"], $input["povp_srcni_utrip"], $input["povp_hitrost"], $input["razdalja"], $input["cas"],  $input["id"]);
+                        $podatek=new Aktivnost($input["datum"], $input["ocena_aktivnosti"], $input["koraki"], $input["porabljene_kalorije"], $input["povp_srcni_utrip"], $input["povp_hitrost"], $input["razdalja"], $input["cas"],  $input["id"], $input["lat"], $input["lon"]);
                         $rezultat = $podatek->dodaj($db);
                         if($rezultat == true){
                             $podatek=array("info"=>"Uspesno vstavljena aktivnost");
@@ -169,7 +169,7 @@ if(isset($request[0])&&($request[0]=='baza')){
                     parse_str(file_get_contents('php://input'),$input);
                     if(isset($input)){
                         if(isset($_SESSION["USER_ID"])){
-                            $podatek=new Aktivnost($input["datum"], $input["ocena_aktivnosti"], $input["koraki"], $input["porabljene_kalorije"], $input["povp_srcni_utrip"], $input["povp_hitrost"], $input["razdalja"], $input["cas"],  $_SESSION["USER_ID"]);
+                            $podatek=new Aktivnost($input["datum"], $input["ocena_aktivnosti"], $input["koraki"], $input["porabljene_kalorije"], $input["povp_srcni_utrip"], $input["povp_hitrost"], $input["razdalja"], $input["cas"],  $_SESSION["USER_ID"], $input["lat"], $input["lon"]);
                             $rezultat = $podatek->dodaj($db);
                             if($rezultat == true){
                                 $podatek=array("info"=>"Uspesno vstavljena aktivnost");

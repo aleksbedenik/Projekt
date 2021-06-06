@@ -30,16 +30,19 @@
         $.get("api.php/baza/povprecje",function(data){
 
 
-
-
-
-            console.log();
-
             let $podatki = "<tr><th>Povp. koraki</th><th>Povp. poraba kalorij</th><th>Povp. srčni utrip</th><th>Povp. hitrost</th><th>Povp. razdalja</th><th>Povp. čas</th></tr>";
             $podatki += "<tr><td>"+ data[0].povp_koraki +"</td><td>"+ data[0].povp_poraba_kalorij +"</td><td>"+ data[0].povp_srcni_utrip +"</td><td>"+ data[0].povp_hitrost +"</td><td>"+ data[0].povp_razdalja +"</td><td>"+ data[0].povp_cas +"</td></tr>";
             $("#izpis").html($podatki);
 
-            var arr = [data[0].povp_koraki,data[0].povp_poraba_kalorij,data[0].povp_srcni_utrip,data[0].povp_hitrost,data[0].povp_razdalja,parseInt(data[0].povp_cas.substring(3,5))]; //podatki za graf
+            var min = parseInt(data[0].povp_cas.substring(3,5));
+            var hr = parseInt(data[0].povp_cas.substring(0,2));
+            while(hr>0){
+                min+=60;
+                hr--;
+            }
+            //console.log(min);
+
+            var arr = [data[0].povp_koraki,data[0].povp_poraba_kalorij,data[0].povp_srcni_utrip,data[0].povp_hitrost,data[0].povp_razdalja,min]; //podatki za graf
 
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
