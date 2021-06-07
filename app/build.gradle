@@ -40,8 +40,11 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation project(path: ':Userinfo')
     testImplementation 'junit:junit:4.+'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.google.code.gson:gson:2.8.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

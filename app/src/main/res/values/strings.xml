@@ -11,5 +11,11 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="name_surname"><b>Ime in Priimek</b></string>
+    <string name="my_profile"><b>Moj Profil</b></string>
+    <string name="height"><b>Višina</b></string>
+    <string name="weight"><b>Teža</b></string>
+    <string name="gender"><b>Spol</b></string>
+    <string name="email"><b>Email</b></string>
 
 </resources>

@@ -14,7 +14,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -111,10 +113,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
+                    password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
                     password.setText("");
                     onPassword.setText("Geslo");
                 }else{
                     if(TextUtils.isEmpty(password.getText().toString())){
+                        password.setInputType(InputType.TYPE_CLASS_TEXT);
                         password.setText("Geslo");
                         Log.i("Main","Dela");
                     }
@@ -228,10 +233,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }*/
-    public void buttonTest(View view) {
-       Intent i = new Intent(getBaseContext(), BottomNavigationActivity.class);
-       startActivity(i);
-    }
+
 
     public void MainActivity_login_button(View view) {
         postRequestLoginUser(username.getText().toString(),password.getText().toString());
